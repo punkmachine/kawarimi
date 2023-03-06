@@ -1,23 +1,20 @@
 {
-  "name": "@punkdevs/kawarimi",
-  "version": "0.0.1",
-  "description": "api mocker",
-  "main": "index.js",
+  "name": "kawarimi",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/punkmachine/kawarimi.git"
-  },
-  "keywords": [
-    "mocker",
-    "mock api"
-  ],
-  "author": "punkmachine",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/punkmachine/kawarimi/issues"
-  },
-  "homepage": "https://github.com/punkmachine/kawarimi#readme"
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^18.14.6",
+    "prettier": "^2.8.4",
+    "rollup-plugin-typescript-paths": "^1.4.0",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
+  }
 }
