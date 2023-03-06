@@ -1,0 +1,23 @@
+{
+  "name": "@punkdevs/kawarimi",
+  "version": "0.0.1",
+  "description": "api mocker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/punkmachine/kawarimi.git"
+  },
+  "keywords": [
+    "mocker",
+    "mock api"
+  ],
+  "author": "punkmachine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/punkmachine/kawarimi/issues"
+  },
+  "homepage": "https://github.com/punkmachine/kawarimi#readme"
+}
