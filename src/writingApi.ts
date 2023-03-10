@@ -19,7 +19,7 @@ interface IInstance {
 
 interface IConfigRequest {
 	adapter: string[],
-	baseUrl: string,
+	baseURL: string,
 	env: object,
 	headers: object, // todo: интерфейс хедера?
 	maxBodyLength: number,
@@ -37,24 +37,44 @@ interface IConfigRequest {
 
 interface IInterceptorResponse {
 	config: IConfigRequest,
-	// data: // todo: а какой тип указать то для данных с сервера...
+	data: any,
 	headers: object,
 	request: object,
 	status: number,
 	statusText: string,
-}
+};
+
+interface IWritingData {
+	request: {
+		baseUrl: string,
+		url: string,
+		method: string,
+		headers: object,
+	},
+	response: {
+		data: any,
+		headers: object,
+		status: number,
+	}
+};
 
 export function writingApi(instance: IInstance): void {
-	instance.interceptors.request.use((config: IConfigRequest) => {
-		console.log(config);
-
-		return config;
-	}, function (error) {
-	  return Promise.reject(error);
-	});
-
 	instance.interceptors.response.use((response: IInterceptorResponse) => {
-		console.log(response);
+		const writeData: IWritingData = {
+			request: {
+				baseUrl: response.config.baseURL,
+				url: `${response.config.baseURL}${response.config.url}`,
+				method: response.config.method,
+				headers: response.config.headers,
+			},
+			response: {
+				data: response.data,
+				headers: response.headers,
+				status: response.status,
+			}
+		};
+
+		console.log(writeData);
 
 		return response;
 	}, function (error) {
