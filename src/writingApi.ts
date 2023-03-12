@@ -1,54 +1,10 @@
-interface IRequest {
-	use: Function,
-};
-
-interface IResponse {
-	use: Function,
-};
-
-interface IInterceptors {
-	request: IResponse,
-	response: IRequest
-}
-
-interface IInstance {
-	request: IRequest,
-	response: IResponse,
-	interceptors: IInterceptors
-};
-
-interface IConfigRequest {
-	adapter: string[],
-	baseURL: string,
-	env: object,
-	headers: object, // todo: интерфейс хедера?
-	maxBodyLength: number,
-	maxContentLength: number,
-	method: string, // todo: словарь методов?
-	timeout: number,
-	transformRequest: Function,
-	transformResponse: Function,
-	transitional: object,
-	url: string,
-	validateStatus: Function,
-	xsrfCookieName: string,
-	xsrfHeaderName: string,
-};
-
-interface IInterceptorResponse {
-	config: IConfigRequest,
-	data: any,
-	headers: object,
-	request: object,
-	status: number,
-	statusText: string,
-};
+import { AxiosInstance, AxiosResponse } from './axios-types'
 
 interface IWritingData {
 	request: {
-		baseUrl: string,
+		baseUrl: string | undefined,
 		url: string,
-		method: string,
+		method: string | undefined,
 		headers: object,
 	},
 	response: {
@@ -58,8 +14,8 @@ interface IWritingData {
 	}
 };
 
-export function writingApi(instance: IInstance): void {
-	instance.interceptors.response.use((response: IInterceptorResponse) => {
+export function writingApi(instance: AxiosInstance): void {
+	instance.interceptors.response.use((response: AxiosResponse) => {
 		const writeData: IWritingData = {
 			request: {
 				baseUrl: response.config.baseURL,
