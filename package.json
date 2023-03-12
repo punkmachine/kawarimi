@@ -22,6 +22,10 @@
   "bugs": {
     "url": "https://github.com/punkmachine/kawarimi/issues"
   },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/main.js",
   "homepage": "https://github.com/punkmachine/kawarimi#readme",
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.0.0",

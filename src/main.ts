@@ -1,5 +1,39 @@
-export const init = (client: string) => {
-    console.log('init');
+import { AxiosInstance, AxiosResponse } from '.';
 
-    return `Your http client: ${client}`;
+interface IWritingData {
+	request: {
+		baseUrl: string | undefined,
+		url: string,
+		method: string | undefined,
+		headers: object,
+	},
+	response: {
+		data: any,
+		headers: object,
+		status: number,
+	}
+};
+
+export function kawarimiMocker(instance: AxiosInstance): void {
+	instance.interceptors.response.use((response: AxiosResponse) => {
+		const writeData: IWritingData = {
+			request: {
+				baseUrl: response.config.baseURL,
+				url: `${response.config.baseURL}${response.config.url}`,
+				method: response.config.method,
+				headers: response.config.headers,
+			},
+			response: {
+				data: response.data,
+				headers: response.headers,
+				status: response.status,
+			}
+		};
+
+		console.log(writeData);
+
+		return response;
+	}, function (error: Error) {
+		return Promise.reject(error);
+	});
 }
