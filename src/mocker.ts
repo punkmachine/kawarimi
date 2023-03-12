@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from './axios-types'
+import { AxiosInstance, AxiosResponse } from '.';
 
 interface IWritingData {
 	request: {
@@ -14,7 +14,7 @@ interface IWritingData {
 	}
 };
 
-export function writingApi(instance: AxiosInstance): void {
+export function mocker(instance: AxiosInstance): void {
 	instance.interceptors.response.use((response: AxiosResponse) => {
 		const writeData: IWritingData = {
 			request: {
@@ -33,7 +33,7 @@ export function writingApi(instance: AxiosInstance): void {
 		console.log(writeData);
 
 		return response;
-	}, function (error) {
+	}, function (error: Error) {
 		return Promise.reject(error);
 	});
 }
