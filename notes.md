@@ -1,0 +1,1 @@
+1. Шифрование ключей IMocksDictionary c помощью base64
