@@ -1,39 +1,52 @@
 import { AxiosInstance, AxiosResponse } from '.';
 
-interface IWritingData {
-	request: {
-		baseUrl: string | undefined,
-		url: string,
-		method: string | undefined,
-		headers: object,
+interface IMocksDictionary {
+	[key: string]: any;
+};
+
+const mocks: IMocksDictionary = {
+	'[get]:[http://localhost:3001/type-viewing]': {
+		data: [
+			"movie",
+			"cartoon",
+			"series",
+			"animated_series",
+			"anime",
+			"anime_series"
+		]
 	},
-	response: {
-		data: any,
-		headers: object,
-		status: number,
-	}
+	'[get]:[http://localhost:3001/watch-list]': {
+		data: [
+			{
+				"id": "1676850018403",
+				"name": "Абстракция",
+				"is-franchise": false,
+				"type-viewing": "series"
+			},
+			{
+				"id": "1677390343862",
+				"name": "Достать ножи: Стеклянная луковица",
+				"is-franchise": false,
+				"type-viewing": "movie"
+			},
+		]
+	},
 };
 
 export function kawarimiMocker(instance: AxiosInstance): void {
-	instance.interceptors.response.use((response: AxiosResponse) => {
-		const writeData: IWritingData = {
-			request: {
-				baseUrl: response.config.baseURL,
-				url: `${response.config.baseURL}${response.config.url}`,
-				method: response.config.method,
-				headers: response.config.headers,
-			},
-			response: {
-				data: response.data,
-				headers: response.headers,
-				status: response.status,
+	instance.interceptors.response.use(async (response: AxiosResponse) => {
+		let data: AxiosResponse = JSON.parse(JSON.stringify(response));
+		const key: string = `[${response.config.method}]:[${response.config.baseURL}${response.config.url}]`;
+
+		if (mocks[key]) {
+			data = {
+				...data,
+				...mocks[key]
 			}
-		};
+		}
 
-		console.log(writeData);
-
-		return response;
-	}, function (error: Error) {
+		return data;
+	}, (error: Error) => {
 		return Promise.reject(error);
 	});
 }
