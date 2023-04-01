@@ -536,3 +536,31 @@ export interface AxiosStatic extends AxiosInstance {
 	CanceledError: typeof CanceledError;
 	AxiosHeaders: typeof AxiosHeaders;
 }
+
+export interface IModels {
+	[key: string]: Function;
+};
+
+export interface IModelItem {
+	type: string, // какой-то паттерн, что можно указывать?
+	properties?: {
+		[key: string]: {
+			type: string,
+			required: boolean,
+			options?: {
+				maxLength?: number,
+				minLength?: number,
+				specialSymbols?: boolean,
+				textTransform?: 'capitalize' | 'lowercase' | 'uppercase',
+			},
+			linkEnum?: string,
+		},
+	},
+	link: {
+		name: string,
+	},
+	options?: {
+		enum?: boolean,
+		linkEnum?: string,
+	}
+}

@@ -1,52 +1,13 @@
-import { InternalAxiosRequestConfig } from '.';
+import { InternalAxiosRequestConfig, IModelItem } from '.';
+import { models } from './schemas/models';
 
 interface IMocks {
 	[key: string]: Function;
 };
 
-interface IModels {
-	[key: string]: Function;
-};
-
-const enumsList = {
-	'status-orders': [
-		1, 2, 3, 4, 5, 6
-	]
-};
-
-const modelsExample: IModels = {
-	'[get]:[http://localhost:3001/orders]': () => {
-		return {
-			type: 'array', // тип ответа: объект, массив, строка, число.
-			properties: {
-				id: {
-					type: 'int',
-					required: true,
-					datatype: 'id',
-				},
-				courierName: {
-					type: 'string',
-					nullable: true,
-					datatype: 'name'
-				},
-				address: {
-					type: 'link',
-					required: true,
-					datatype: 'address',
-					link: 'points' // ссылка на условную модельку поинтов
-				},
-				status: {
-					type: 'enum',
-					required: true,
-					datatype: 'enum',
-					linkEnum: 'status-orders' // ссылка на схему енама где-то в схемах
-				}
-			},
-			link: { // подразумевается, что в типах будет указан ссылочный тип из сваггера
-				name: 'orders'
-			}
-		}
-	}
+// todo: нормальный интерфейс
+interface IOptionsGenerate {
+	[key: string]: any,
 };
 
 // Данные, которые мы будем генерировать из моделей:
@@ -83,27 +44,36 @@ const mocks: IMocks = {
 	},
 };
 
-function getModel(config) {
-	const key: string = `[${config.method}]:[${config.baseURL}${config.url}]`;
-
-	return modelsExample[key];
+function getKey(config: InternalAxiosRequestConfig): string {
+	return `[${config.method}]:[${config.baseURL}${config.url}]`;
 }
 
-function generateData(config) {
-	/*
-		count - количество элементов в массиве.
-		properties - объект, внутри которого будут данные свойств, которые должны быть заданы статично, а не генератором
-	*/
+function getModel(config: InternalAxiosRequestConfig): IModelItem {
+	const key: string = getKey(config);
+	const model: IModelItem = models[key]();
+
+	return model;
+}
+
+// todo: генерация данных
+function generateData(model: IModelItem, options?: IOptionsGenerate): any {
+	console.log('model >>>', model);
+	console.log('options >>>', options);
+
+	if (options) {
+		return  mocks[options.key]();
+	}
+
+	return null;
 }
 
 export function mockingData(config: InternalAxiosRequestConfig) {
 	return new Promise(resolve => {
-		const key: string = `[${config.method}]:[${config.baseURL}${config.url}]`;
-		let data;
+		const model: IModelItem = getModel(config);
+		// notes: key временная хрень
+		const data = generateData(model, { key: getKey(config) });
 
-		if (mocks[key]) {
-			data = mocks[key]();
-		}
+		console.log('data >>>', data);
 
 		resolve(data);
     });

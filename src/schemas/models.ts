@@ -1,11 +1,8 @@
+import { IModels, IModelItem } from '..';
 import { typeViewingEnums } from './enums';
 
-interface IModels {
-	[key: string]: Function;
-};
-
 const models: IModels = {
-	'[get]:[http://localhost:3001/watch-list]': () => {
+	'[get]:[http://localhost:3001/watch-list]': (): IModelItem => {
 		return {
 			type: 'array[object]',
 			properties: {
